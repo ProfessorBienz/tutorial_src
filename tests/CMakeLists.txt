@@ -2,5 +2,5 @@ include_directories(${tutorial_INCDIR})
 
 add_executable(tutorial_test tutorial_test.cpp)
 target_link_libraries(tutorial_test tutorial gtest_main)
-add_test(TutorialTest mpirun -n 4 ./tutorial_test)
+add_test(TutorialTest mpirun -n 4 ${CMAKE_BINARY_DIR}/bin/tutorial_test)
 
