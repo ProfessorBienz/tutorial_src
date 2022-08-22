@@ -9,12 +9,9 @@
 
 int main(int argc, char** argv)
 {
-    MPI_Init(&argc, &argv);
-
     ::testing::InitGoogleTest(&argc, argv);
 
     int temp = RUN_ALL_TESTS();
-    MPI_Finalize();
 
     return temp;
 }
