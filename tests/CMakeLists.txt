@@ -1,4 +1,5 @@
 include_directories(${tutorial_INCDIR})
+include_directories(${CMAKE_SOURCE_DIR})
 
 add_executable(tutorial_test tutorial_test.cpp)
 target_link_libraries(tutorial_test tutorial gtest_main)
