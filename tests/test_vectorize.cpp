@@ -38,7 +38,7 @@ TEST(TLBTest, TestsIntests)
     }
 
     jacobi_standard(A, x, b, x_std, n);
-    vectorize_jacobi(A, x, b, x_new, n);
+    vectorized_jacobi(A, x, b, x_new, n);
     for (int i = 0; i < n; i++)
         ASSERT_NEAR(x_std[i], x_new[i], 10e-6);
 
