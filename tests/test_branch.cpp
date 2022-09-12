@@ -40,7 +40,7 @@ TEST(TLBTest, TestsIntests)
     jacobi_standard(A, x, b, x_std, n);
     jacobi(A, x, b, x_new, n);
     for (int i = 0; i < n; i++)
-        ASSERT_NEAR(x_std[i], x_new[i], 10e-6);
+        ASSERT_NEAR(x_std[i], x_new[i], 1e-12);
 
     delete[] A;
 }
