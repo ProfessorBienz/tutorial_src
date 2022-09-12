@@ -69,7 +69,18 @@ TEST(TLBTest, TestsIntests)
     for (int i = 0; i < n_iter; i++)
     {
         jacobi(A, x, b, x_std, n);
+    }    double diag = 0;
+    double sum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        diag = A[i*n+i];
+        sum = -diag*x[i];
+#pragma omp simd reduction(+:sum)
+        for (int j = 0; j < n; j++)
+            sum += A[i*n+j]*x[j];
+        x_new[i] = (b[i] - sum) / diag;
     }
+
     tfinal = (get_time() - t0) / n_iter;
     printf("Your Branch Prediction Implementation : %e seconds\n", tfinal);
 
@@ -90,10 +101,14 @@ TEST(TLBTest, TestsIntests)
         parallel_jacobi(A, x, b, x_std, n);
     }
     tfinal = (get_time() - t0) / n_iter;
+
     int n_threads;
-#pragma omp parallel num_threads(4)
+#pragma omp parallel 
     {
-        printf("omp num threads %d\n", omp_get_num_threads());
+#pragma omp master
+        {
+        n_threads = omp_get_num_threads();
+        }
     }
     printf("Your Parallel Implementation (%d threads) : %e seconds\n", n_threads, tfinal);
 
