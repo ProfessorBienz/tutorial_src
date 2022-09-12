@@ -11,6 +11,8 @@
 #include <sys/time.h>
 #include <stdio.h>
 
+#include <omp.h>
+
 double get_time()
 {
     struct timeval timecheck;
