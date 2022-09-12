@@ -103,13 +103,7 @@ TEST(TLBTest, TestsIntests)
     tfinal = (get_time() - t0) / n_iter;
 
     int n_threads;
-#pragma omp parallel 
-    {
-#pragma omp master
-        {
-        n_threads = omp_get_num_threads();
-        }
-    }
+
     printf("Your Parallel Implementation (%d threads) : %e seconds\n", n_threads, tfinal);
 
     delete[] A;
