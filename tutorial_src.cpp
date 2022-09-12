@@ -14,7 +14,7 @@ void jacobi_standard(double* A, double* x, double* b, double* x_new, int n)
             if (i == j)
                 diag = A[i*n+j];
             else
-                sum += A[i*n+j];
+                sum += A[i*n+j]*x[j];
         }
         x_new[i] = (b[i] - sum) / diag;
     }
