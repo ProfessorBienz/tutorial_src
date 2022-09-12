@@ -90,7 +90,12 @@ TEST(TLBTest, TestsIntests)
         parallel_jacobi(A, x, b, x_std, n);
     }
     tfinal = (get_time() - t0) / n_iter;
-    printf("Your Parallel Implementation (%d threads) : %e seconds\n", omp_get_num_threads(), tfinal);
+    int n_threads;
+#pragma omp parallel num_threads(4)
+    {
+        printf("omp num threads %d\n", omp_get_num_threads());
+    }
+    printf("Your Parallel Implementation (%d threads) : %e seconds\n", n_threads, tfinal);
 
     delete[] A;
 }
