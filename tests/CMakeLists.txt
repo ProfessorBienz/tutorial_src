@@ -11,3 +11,7 @@ add_test(VectorizeTest ${CMAKE_BINARY_DIR}/tutorial_src/tests/test_vectorize)
 add_executable(test_parallel test_parallel.cpp)
 target_link_libraries(test_parallel tutorial gtest_main)
 add_test(ParallelTest ${CMAKE_BINARY_DIR}/tutorial_src/tests/test_parallel)
+
+add_executable(test_speeds test_speeds.cpp)
+target_link_libraries(test_speeds tutorial gtest_main)
+add_test(SpeedTest ${CMAKE_BINARY_DIR}/tutorial_src/tests/test_speeds)
