@@ -25,8 +25,8 @@ TEST(TLBTest, TestsIntests)
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
 
-    int global_n = 1024;
-    int n_ter = 1000;
+    int global_n = 4;
+    int n_iter = 1;
     double* A = new double[global_n*global_n];
     double* x_seq = new double[global_n];
     double* x_par = new double[global_n];
@@ -42,15 +42,20 @@ TEST(TLBTest, TestsIntests)
         x_par[i] = x_seq[i];
     }
 
-    double lamda_seq = power_method_seq(global_n, A, x_seq, tmp, n_iter);
+    double lambda_seq = power_method_seq(global_n, A, x_seq, tmp, n_iter);
 
     int local_n = global_n / num_procs;
     int first_n = local_n * rank;
-    double lambda_par = power_method(global_n, local_n, A, x_par, tmp, n_iter);
+    double lambda_par = power_method(global_n, local_n, first_n, &(A[first_n*global_n]), x_par, &(tmp[first_n]), n_iter);
+
+    ASSERT_NEAR(lambda_seq, lambda_par, 1e-10);
 
 
     for (int i = 0; i < global_n; i++)
-        ASSERT_NEAR(x_seq, x_par, 1e-10);
+        ASSERT_NEAR(x_seq[i], x_par[i], 1e-10);
+
+    if (fabs(lambda_seq-lambda_par) < 1e-10)
+        printf("Eigenvalue : %e\n", lambda_par);
 
     delete[] A;
     delete[] x_seq;

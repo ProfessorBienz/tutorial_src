@@ -1,3 +1,5 @@
+#include "tutorial_src/tutorial.h"
+
 // Serial power method
 // Returns eigenvalue
 double power_method_seq(int n, double* A, double* x, double* tmp, int n_iter)
@@ -21,8 +23,9 @@ double power_method_seq(int n, double* A, double* x, double* tmp, int n_iter)
         }
         lambda /= n;
 
-        for (int i = 1; i < n; i++)
+        for (int i = 0; i < n; i++)
             x[i] = tmp[i] / max;
     }
+
     return lambda;
 }
