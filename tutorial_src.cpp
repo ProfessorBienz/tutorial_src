@@ -8,10 +8,10 @@ double power_method_seq(int n, double* A, double* x, double* tmp, int n_iter)
     for (int iter = 0; iter < n_iter; iter++)
     {
         lambda = 0;
+        max = 0;
         for (int i = 0; i < n; i++)
         {
             sum = 0;
-            max = 0;
             for (int j = 0; j < n; j++)
             {
                 sum += A[i*n+j]*x[j];
