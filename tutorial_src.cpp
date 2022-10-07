@@ -1,31 +1,37 @@
 #include "tutorial_src/tutorial.h"
 
-// Serial power method
-// Returns eigenvalue
-double power_method_seq(int n, double* A, double* x, double* tmp, int n_iter)
+// Transpose using extra copy
+double transpose(double* A, double* AT, int local_n, int global_n, int first_n)
 {
-    double sum, max, lambda;
-    for (int iter = 0; iter < n_iter; iter++)
-    {
-        lambda = 0;
-        max = 0;
-        for (int i = 0; i < n; i++)
-        {
-            sum = 0;
-            for (int j = 0; j < n; j++)
-            {
-                sum += A[i*n+j]*x[j];
-            }
-            tmp[i] = sum;
-            if (fabs(sum) > max) 
-                max = fabs(sum);
-            lambda += fabs(tmp[i] - x[i]);
-        }
-        lambda /= n;
+    int rank, num_procs;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
 
-        for (int i = 0; i < n; i++)
-            x[i] = tmp[i] / max;
+    double* buffer = new double[local_n*global_n];
+    MPI_Request* send_requests = new MPI_Request[num_procs];
+    MPI_Request* recv_requests = new MPI_Request[num_procs];
+
+    int msg_size = local_n*local_n; // size of each msg
+    for (int i = 0; i < num_procs; i++)
+    {
+        MPI_Irecv(&(AT[i*msg_size]), msg_size, MPI_DOUBLE, i, tag, MPI_COMM_WORLD,
+                &(recv_requests[i]));
     }
 
-    return lambda;
+    int ctr = 0;
+    for (int i = 0; i < num_procs; i++)
+    {
+        for (int j = i*local_n; j < (i+1)*local_n; j++)
+        {
+            for (int k = 0; k < local_n; k++)
+            {
+                buffer[ctr++] = A[j*local_n+k];
+            }
+        }
+        MPI_Isend(&(buffer[i*msg_size]), msg_size, MPI_DOUBLE, i, tag, MPI_COMM_WORLD,
+                &(send_requests[i]));
+    }
+    
+    MPI_Waitall(num_procs, send_requests, MPI_STATUSES_IGNORE);
+    MPI_Waitall(num_procs, recv_requests, MPI_STATUSES_IGNORE);
 }
