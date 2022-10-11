@@ -9,9 +9,9 @@ extern "C"
 {
 #endif
 
-void transpose(int n, double* A, double* AT);
-void transpose_datatype(int n, double* A, double* AT);
-void transpose_alltoall(int n, double* A, double* AT);
+void transpose(double* A, double* AT, int local_n, int global_n);
+void transpose_datatype(double* A, double* AT, int local_n, int global_n);
+void transpose_alltoall(double* A, double* AT, int local_n, int global_n);
 
 #ifdef __cplusplus
 }
