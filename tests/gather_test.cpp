@@ -6,6 +6,7 @@
 
 #include "gtest/gtest.h"
 #include "tutorial_src/tutorial.h"
+#include "mpi.h"
 
 int main(int argc, char** argv)
 {
