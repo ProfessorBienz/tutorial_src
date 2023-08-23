@@ -19,7 +19,7 @@ double power_method_seq(int n, double* A, double* x, double* tmp, int n_iter)
             tmp[i] = sum;
             if (fabs(sum) > max) 
                 max = fabs(sum);
-            lambda += fabs(tmp[i]/x[i]);
+            lambda += tmp[i]/x[i];
         }
         lambda /= n;
 
