@@ -49,12 +49,11 @@ TEST(TLBTest, TestsIntests)
     int first_n = local_n * rank;
     double lambda_par = power_method(global_n, local_n, first_n, &(A[first_n*global_n]), x_par, &(tmp[first_n]), n_iter);
 
-    //
-    //ASSERT_NEAR(lambda_seq, lambda_par, 1e-10);
+    ASSERT_NEAR(lambda_seq, lambda_par, 1e-10);
 
 
-    //for (int i = 0; i < global_n; i++)
-        //ASSERT_NEAR(x_seq[i], x_par[i], 1e-10);
+    for (int i = 0; i < global_n; i++)
+        ASSERT_NEAR(x_seq[i], x_par[i], 1e-10);
 
     if (fabs(lambda_seq-lambda_par) < 1e-10)
         printf("Eigenvalue : %e\n", lambda_par);
