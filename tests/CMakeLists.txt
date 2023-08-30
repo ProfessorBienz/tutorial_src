@@ -9,4 +9,11 @@ add_executable(gather_test gather_test.cpp)
 target_link_libraries(gather_test tutorial gtest_main)
 add_test(GatherTest mpirun -n 4 --oversubscribe ${CMAKE_BINARY_DIR}/tutorial_src/tests/gather_test)
 
+add_executable(gather_test_self gather_test_self.cpp)
+target_link_libraries(gather_test_self tutorial gtest_main)
+add_test(GatherTestSelf mpirun -n 4 --oversubscribe ${CMAKE_BINARY_DIR}/tutorial_src/tests/gather_test_self)
+
+add_executable(gather_test_nonzero_root gather_test_nonzero_root.cpp)
+target_link_libraries(gather_test_nonzero_root tutorial gtest_main)
+add_test(GatherTestNonzeroRoot mpirun -n 4 --oversubscribe ${CMAKE_BINARY_DIR}/tutorial_src/tests/gather_test_nonzero_root)
 

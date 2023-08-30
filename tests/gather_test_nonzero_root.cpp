@@ -40,21 +40,18 @@ TEST(TLBTest, TestsIntests)
     for (int i = 0; i < max_log; i++)
     {
         s = pow(2, i);
-        int root = 0; // Only testing for root = 0
-        MPI_Gather(send_buffer, s, MPI_DOUBLE, recv_buffer_orig, s, MPI_DOUBLE, 
-                root, MPI_COMM_WORLD);
-        simple_gather(send_buffer, recv_buffer, s, root);
-        MPI_Barrier(MPI_COMM_WORLD); 
 
-        if (rank == root)
-            for (int proc = 0; proc < num_procs; proc++)
-            {
-                if (rank == proc) continue; // This test doesn't care if you copy to yourself
-                for (int j = 0; j < s; j++)
-                {
-                    ASSERT_NEAR(recv_buffer_orig[proc*s+j], recv_buffer[proc*s+j], 1e-10);
-                }
-            }
+        for (int root = 0; root < num_procs; root++)
+        {
+            MPI_Gather(send_buffer, s, MPI_DOUBLE, recv_buffer_orig, s, MPI_DOUBLE, 
+                root, MPI_COMM_WORLD);
+            simple_gather(send_buffer, recv_buffer, s, root);
+            MPI_Barrier(MPI_COMM_WORLD); 
+
+            if (rank == root)
+                for (int j = 0; j < s*num_procs; j++)
+                    ASSERT_NEAR(recv_buffer_orig[j], recv_buffer[j], 1e-10);
+        }
     }
 
     delete[] send_buffer;
