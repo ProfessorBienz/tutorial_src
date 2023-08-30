@@ -49,7 +49,7 @@ TEST(TLBTest, TestsIntests)
             MPI_Barrier(MPI_COMM_WORLD); 
 
             if (rank == root)
-                for (int j = 0; j < s; j++)
+                for (int j = 0; j < s*num_procs; j++)
                     ASSERT_NEAR(recv_buffer_orig[j], recv_buffer[j], 1e-10);
         }
     }
