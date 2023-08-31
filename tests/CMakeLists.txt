@@ -17,6 +17,10 @@ add_executable(gather_test gather_test.cpp)
 target_link_libraries(gather_test tutorial gtest_main ${MPI_LIBRARIES})
 add_test(GatherTest mpirun -n 4 --oversubscribe ${CMAKE_BINARY_DIR}/tutorial_src/tests/gather_test)
 
+add_executable(gather_test_large gather_test_large.cpp)
+target_link_libraries(gather_test_large tutorial gtest_main ${MPI_LIBRARIES})
+add_test(GatherTestLarge mpirun -n 4 --oversubscribe ${CMAKE_BINARY_DIR}/tutorial_src/tests/gather_test_large)
+
 add_executable(gather_test_self gather_test_self.cpp)
 target_link_libraries(gather_test_self tutorial gtest_main ${MPI_LIBRARIES})
 add_test(GatherTestSelf mpirun -n 4 --oversubscribe ${CMAKE_BINARY_DIR}/tutorial_src/tests/gather_test_self)
