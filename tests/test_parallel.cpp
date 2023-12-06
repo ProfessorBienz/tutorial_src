@@ -19,6 +19,7 @@ int main(int argc, char** argv)
 TEST(TLBTest, TestsIntests)
 {
     int n = 100;
+    omp_set_num_threads(25);
 
     double* A = new double[n*n];
     double* x = new double[n];
@@ -37,10 +38,13 @@ TEST(TLBTest, TestsIntests)
         }
     }
 
-    jacobi_standard(A, x, b, x_std, n);
-    parallel_jacobi(A, x, b, x_new, n);
-    for (int i = 0; i < n; i++)
-        ASSERT_NEAR(x_std[i], x_new[i], 1e-12);
-
+    for (int i = 0; i < 100; i++)
+    {
+        jacobi_standard(A, x, b, x_std, n);
+        parallel_jacobi(A, x, b, x_new, n);
+        for (int i = 0; i < n; i++)
+            ASSERT_NEAR(x_std[i], x_new[i], 1e-12);
+    }
+    
     delete[] A;
 }
